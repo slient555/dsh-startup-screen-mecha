@@ -1,0 +1,59 @@
+{
+  "name": "dsh-startup-screen-mecha",
+  "version": "1.3.0",
+  "description": "机甲主题的 DeepSeek Harness 启动界面：黑幕厂牌 → 过曝洗白 → 机甲座舱（白蓝机甲 + 目镜辉光 + HUD）→ 可交互的五步授权（身份卡点选、接驳协议三选一）→ 欢迎页。机甲图已内嵌。",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "deepseek-harness-desktop",
+    "startup",
+    "splash",
+    "mecha",
+    "boot-animation",
+    "机甲"
+  ],
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "test",
+    "docs",
+    "demo",
+    "preview/index.html",
+    "open-preview.sh",
+    "打开预览.cmd",
+    "安装.cmd",
+    "cordis.patch.yml",
+    "README.md",
+    "INSTALL.md",
+    "DESKTOP.md",
+    "AUDIO-FIELDS.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node test/smoke-host.mjs && node test/smoke-splash.mjs && node test/smoke-client.mjs && node test/smoke-desktop-boot.mjs"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=20",
+    "dsh": ">=0.2.0"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-settings"
+      ],
+      "platform": "web"
+    }
+  },
+  "author": "slient555"
+}
