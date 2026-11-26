@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>天蓝机甲 · dsh-startup-screen 启动动画</title>
+<link rel="stylesheet" href="../lib/splash.css">
+<style>
+  html, body { margin: 0; height: 100%; background: #020a13; overflow: hidden; }
+  body {
+    font-family: "Bahnschrift", "Microsoft YaHei", system-ui, sans-serif;
+    color: #d9f1ff;
+    /* 页面底色：与启动动画同一套天蓝机甲语言，揭幕之后不会"啪"地变成大白屏 */
+    background:
+      radial-gradient(90% 60% at 76% 10%, rgba(40, 150, 255, .22), rgba(0, 0, 0, 0) 60%),
+      radial-gradient(70% 60% at 14% 96%, rgba(0, 190, 255, .18), rgba(0, 0, 0, 0) 62%),
+      linear-gradient(168deg, #0a2137 0%, #04101d 55%, #020a13 100%);
+  }
+  #cover {
+    position: fixed; inset: 0; z-index: 2147483100;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(2, 10, 19, .55);
+    backdrop-filter: blur(10px);
+    transition: opacity 420ms ease;
+  }
+  #cover.hide { opacity: 0; pointer-events: none; }
+  .card {
+    width: min(560px, 86vw);
+    padding: 34px 40px 30px;
+    border: 1px solid rgba(90, 200, 255, .38);
+    border-radius: 4px;
+    background:
+      linear-gradient(180deg, rgba(14, 48, 78, .92), rgba(5, 18, 31, .94));
+    box-shadow: 0 0 0 1px rgba(120, 220, 255, .12) inset, 0 30px 80px rgba(0, 0, 0, .55);
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: ""; position: absolute; left: 0; right: 0; top: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, #7fe3ff, transparent);
+    opacity: .85;
+  }
+  .kicker {
+    font-size: 11px; letter-spacing: .42em; text-indent: .42em;
+    color: #6fb8dd; font-family: "Cascadia Mono", Consolas, monospace;
+  }
+  h1 {
+    margin: 12px 0 4px; font-size: 30px; letter-spacing: .1em; font-weight: 700;
+    color: #eaf9ff;
+  }
+  .sub {
+    margin: 0 0 24px; font-size: 13px; letter-spacing: .04em; color: #8fc3de;
+    line-height: 1.8;
+  }
+  .sub b { color: #9fe9ff; font-weight: 600; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 13px 30px;
+    border: 1px solid #4fc4ff;
+    background: linear-gradient(180deg, rgba(20, 120, 180, .35), rgba(10, 60, 100, .35));
+    color: #eaf9ff; font: inherit; font-size: 15px; letter-spacing: .3em; text-indent: .3em;
+    cursor: pointer; border-radius: 2px;
+    box-shadow: 0 0 22px rgba(40, 180, 255, .28);
+    transition: background 200ms ease, box-shadow 200ms ease, transform 120ms ease;
+  }
+  .btn:hover { background: linear-gradient(180deg, rgba(30, 160, 230, .5), rgba(12, 80, 130, .5)); box-shadow: 0 0 34px rgba(60, 200, 255, .45); }
+  .btn:active { transform: translateY(1px); }
+  .meta {
+    margin-top: 22px; font-size: 11px; letter-spacing: .1em; color: #5c8fae;
+    font-family: "Cascadia Mono", Consolas, monospace;
+  }
+  #again {
+    position: fixed; right: 22px; bottom: 20px; z-index: 2147483100;
+    display: none; gap: 10px; align-items: center;
+    font-size: 12px; letter-spacing: .16em; color: #a9d7ee;
+    border: 1px solid rgba(90, 190, 255, .35); background: rgba(6, 26, 44, .72);
+    padding: 9px 16px; cursor: pointer; border-radius: 2px;
+  }
+  #again:hover { border-color: #4fc4ff; color: #eaf9ff; }
+  #again.show { display: inline-flex; }
+</style>
+</head>
+<body>
+
+<button id="again" type="button">↻ 再看一遍</button>
+
+<div id="cover">
+  <div class="card">
+    <div class="kicker">DSH STARTUP SCREEN · MECHA SKIN</div>
+    <h1>天蓝机甲 · 启动序列</h1>
+    <p class="sub">
+      装甲鳞片底板 / 天蓝能量流苏 / 六幕授权序列（接驳许可待下达 → 驾驶员链路）。
+      <br><b>点一下开始</b>：浏览器要求先有一次点击才准出声，这一下同时解锁音效与语音。
+    </p>
+    <button class="btn" id="play" type="button">▶ 启 动</button>
+    <div class="meta">ESC / SKIP ▸ 可跳过　·　离线演示，音色走系统 TTS 兜底</div>
+  </div>
+</div>
+
+<script>
+  /* 配置：和设置页里的默认值一致；这里关掉"等用户确认"，让演示自己走完全程 */
+  window.__DSH_STARTUP_SCRIPT_URL__ = '../lib/splash.js';
+  window.__DSH_STARTUP__ = {
+    enabled: true,
+    mode: 'always',
+    theme: 'light',
+    speed: 1,
+    requireInteraction: false,
+    allowSkip: true,
+    sound: true,
+    voice: true,
+    voiceLang: 'en',
+    voiceSource: 'tts',
+    sfx: 'synth',
+    identity: 'JOYCE MOORE',
+    identityId: '0087',
+    accessLevel: '3',
+    accent: '#12a8ff',
+    glitchA: '#00e0ff',
+    glitchB: '#3457ff'
+  };
+
+  var started = false;
+  var cover = document.getElementById('cover');
+  var again = document.getElementById('again');
+
+  function start() {
+    cover.classList.add('hide');
+    if (!started) {
+      started = true;
+      var s = document.createElement('script');
+      s.src = '../lib/splash.js';
+      s.onload = watch;
+      document.body.appendChild(s);
+      return;
+    }
+    if (window.__DSH_STARTUP_API__ && window.__DSH_STARTUP_API__.replay) {
+      window.__DSH_STARTUP_API__.replay();
+      again.classList.remove('show');
+      watch();
+    }
+  }
+
+  /* 揭幕之后启动界面会把自己整个摘掉，这时才把"再看一遍"亮出来 */
+  function watch() {
+    var timer = setInterval(function () {
+      var root = document.getElementById('dsh-startup-root');
+      if (!root) { again.classList.add('show'); clearInterval(timer); }
+    }, 400);
+    setTimeout(function () { clearInterval(timer); }, 60000);
+  }
+
+  document.getElementById('play').addEventListener('click', start);
+  again.addEventListener('click', start);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); start(); }
+  });
+</script>
+
+</body>
+</html>
